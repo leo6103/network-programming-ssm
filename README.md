@@ -39,3 +39,17 @@ Internally, the program store the list of registered courses (by students) and t
 ### Human interface
 - Login.
 - Read Schedule with input : weekday (Monday, Tuesday,...) or "ALL"
+
+## Run program
+### Build executable
+```
+make
+```
+### Run program
+```
+make run
+```
+### Clean program
+```
+make clean
+```
