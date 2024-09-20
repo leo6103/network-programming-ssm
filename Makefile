@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-SRC = src/main.c src/course_schedule.c src/student_registration.c src/user_account.c
+SRC = src/main.c src/course_schedule.c src/student_registration.c src/user_account.c src/utils.c
 OBJ = $(SRC:.c=.o)
 
 TARGET = main

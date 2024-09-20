@@ -1,8 +1,8 @@
-#include"user_account.h"
 #include<stdio.h>
 #include<string.h>
+#include"user_account.h"
 
-const char *const USER_FILE_NAME = "../data/user_account.txt";
+const char *const USER_FILE_NAME = "./data/user_account.txt";
     
 
 void readUsers() {

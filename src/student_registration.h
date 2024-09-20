@@ -1,14 +1,16 @@
 #ifndef STUDENT_REGISTRATION_H
 #define STUDENT_REGISTRATION_H
 
+#define MAX_REGISTRATIONS 10000
+
 extern const char *const REGISTRATION_FILE_NAME;
 
 typedef struct Registration {
-    char studentId[9];
-    char classCode[7];
+    char *studentId;
+    char *classCode;
 } Registration;
 
-extern Registration registrations[20];
+extern Registration registrations[MAX_REGISTRATIONS];
 
 void readRegistrations();
 
