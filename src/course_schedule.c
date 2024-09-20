@@ -5,7 +5,6 @@
 #include "course_schedule.h"
 #include "utils.h"
 
-
 const char *const COURSE_FILE_NAME = "./data/course_schedule.txt";
 int courseNum;
 
@@ -80,14 +79,13 @@ Schedule parseSchedule(char *schedule) {
 }
 
 void readCourses() {
-    printf("Read Course Schedule\n");
     FILE *file = fopen(COURSE_FILE_NAME, "r");
     if (file == NULL) {
         printf("Cannot open file: %s\n", COURSE_FILE_NAME);
         return;
     }
 
-    char *line = malloc(MAX_LINE_LENGTH);
+    char *line = malloc(MAX_COURSE_LINE_LENGTH);
     int row = 0;
 
     while (fgets(line, MAX_COURSES, file) && row < MAX_COURSES) {
@@ -105,6 +103,7 @@ void readCourses() {
             .schedule = schedule
         };
         courses[row] = course;
+
         freeParsedStrings(columns.strings, columns.size);
         row++;
     }

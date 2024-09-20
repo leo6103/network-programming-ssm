@@ -2,7 +2,7 @@
 #define COURSE_SCHEDULE_H
 
 #define MAX_COURSES 100
-#define MAX_LINE_LENGTH 1024
+#define MAX_COURSE_LINE_LENGTH 1024
 #define MIN_FILE_COLUMNS 5
 
 extern const char *const COURSE_FILE_NAME;

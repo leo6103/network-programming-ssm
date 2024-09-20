@@ -12,6 +12,38 @@ void initializeData() {
     readUsers();
 }
 
+void checkRegistrationData() {
+    printf("+----------------+----------------+\n");
+    printf("| Student ID     | Class Code     |\n");
+    printf("+----------------+----------------+\n");
+
+    for (int i = 0; i < registrationNum; i++) {
+        if (registrations[i].classCode[0] == '\0') {
+            continue;
+        }
+
+        printf("| %-14s | %-14s |\n", registrations[i].studentId, registrations[i].classCode);
+    }
+
+    printf("+----------------+----------------+\n");
+}
+
+void checkUserData() {
+    printf("+----------------+----------------+\n");
+    printf("| Student ID     | Password     |\n");
+    printf("+----------------+----------------+\n");
+
+    for (int i = 0; i < userNum; i++) {
+        if (users[i].studentId[0] == '\0') {
+            continue;
+        }
+
+        printf("| %-14s | %-14s |\n", users[i].studentId, users[i].password);
+    }
+
+    printf("+----------------+----------------+\n");
+}
+
 void searchScheduleOnWeekDay(const char *searchWeekDay) {
     printf("+---------+----------+---------------------------+-----------+---------+-------+-------+----------+------------------------+\n");
     printf("| Class   | Course   | Course Name               | Week Day  | Time    | Start | End   | Room     | Active Weeks           |\n");
@@ -53,5 +85,10 @@ void searchScheduleOnWeekDay(const char *searchWeekDay) {
 int main() {
     initializeData();
     searchScheduleOnWeekDay("ALL");
+    printf("==============\n");
+    checkRegistrationData();
+    printf("==============\n");
+    checkUserData();
+
     return 0;
 }
