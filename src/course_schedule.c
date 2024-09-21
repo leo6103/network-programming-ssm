@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "user_account.h"
+#include "student_registration.h"
 #include "course_schedule.h"
 #include "utils.h"
 
@@ -10,26 +12,8 @@ int courseNum;
 
 Course courses[MAX_COURSES];
 
-char* mergeStrings(char **strs, int start, int end, char *delim) {
-    int strLength = 0;
-    for (int i = start; i <= end; ++i) {
-        strLength += strlen(strs[i]);
-    }
-    strLength += end - start;
-
-    char *result = malloc(strLength + 1);
-
-    strcpy(result, strs[start]);
-    for (int i = start + 1; i <= end; ++i) {
-        strcat(result, delim);
-        strcat(result, strs[i]);
-    }
-
-    return result;
-}
-
 Schedule parseSchedule(char *schedule) {
-    ParsedStrings tokens = parseStrings(schedule, ",;");
+    StringList tokens = parseStrings(schedule, ",;");
 
     char *room = strdup(tokens.strings[tokens.size - 1]);
     char *activeWeeks = mergeStrings(tokens.strings, 2, tokens.size - 2, ",");
@@ -78,6 +62,55 @@ Schedule parseSchedule(char *schedule) {
     return s;
 }
 
+void searchSchedule() {
+    printf("Search schedule with day of the week (Monday, Tuesday, ...) or \"ALL\" :\n");
+    char weekDay[20];
+    fgets(weekDay, 20, stdin);
+    weekDay[strcspn(weekDay, "\n")] = '\0';
+
+    StringList registeredClasses = getRegisteredClasses(currentUser.studentId);
+
+    printf("+---------+----------+---------------------------+-----------+---------+-------+-------+----------+------------------------+\n");
+    printf("| Class   | Course   | Course Name               | Week Day  | Time    | Start | End   | Room     | Active Weeks           |\n");
+    printf("+---------+----------+---------------------------+-----------+---------+-------+-------+----------+------------------------+\n");
+
+    for (int i = 0; i < courseNum; i++) {
+        if (courses[i].classCode[0] == '\0') {
+            continue;
+        }
+
+        if (!courseInRegisterdClasss(registeredClasses, courses[i])) {
+            continue;
+        }
+
+        if (strcmp(weekDay, "ALL") != 0 && strcmp(courses[i].schedule.weekDay, weekDay) != 0) {
+            continue;
+        }
+
+        char truncatedName[26];
+        strncpy(truncatedName, courses[i].courseName, 25);
+        truncatedName[25] = '\0';
+        if (strlen(courses[i].courseName) > 25) {
+            truncatedName[22] = '.';
+            truncatedName[23] = '.';
+            truncatedName[24] = '.';
+        }
+
+        printf("| %-7s | %-8s | %-25s | %-9s | %-7s | %-5d | %-5d | %-8s | %-22s |\n",
+               courses[i].classCode,
+               courses[i].courseCode,
+               truncatedName,
+               courses[i].schedule.weekDay,
+               courses[i].schedule.session,
+               courses[i].schedule.startPeriod,
+               courses[i].schedule.endPeriod,
+               courses[i].schedule.room,
+               courses[i].schedule.activeWeeks);
+    }
+
+    printf("+---------+----------+---------------------------+-----------+---------+-------+-------+----------+------------------------+\n");
+}
+
 void readCourses() {
     FILE *file = fopen(COURSE_FILE_NAME, "r");
     if (file == NULL) {
@@ -89,7 +122,7 @@ void readCourses() {
     int row = 0;
 
     while (fgets(line, MAX_COURSES, file) && row < MAX_COURSES) {
-        ParsedStrings columns = parseStrings(line, " \t\n");
+        StringList columns = parseStrings(line, " \t\n");
 
         char *classCode = strdup(columns.strings[0]);
         char *courseCode = strdup(columns.strings[1]);
@@ -104,7 +137,7 @@ void readCourses() {
         };
         courses[row] = course;
 
-        freeParsedStrings(columns.strings, columns.size);
+        freeStringList(columns.strings, columns.size);
         row++;
     }
     courseNum = row;

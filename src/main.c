@@ -4,6 +4,7 @@
 #include "course_schedule.h"
 #include "student_registration.h"
 #include "user_account.h"
+#include "utils.h"
 
 
 void initializeData() {
@@ -84,11 +85,9 @@ void searchScheduleOnWeekDay(const char *searchWeekDay) {
 
 int main() {
     initializeData();
-    searchScheduleOnWeekDay("ALL");
-    printf("==============\n");
-    checkRegistrationData();
-    printf("==============\n");
-    checkUserData();
+    printSystemTitle();
+    authenticate();
+    searchSchedule();
 
     return 0;
 }

@@ -26,5 +26,6 @@ typedef struct Course {
 extern Course courses[MAX_COURSES];
 
 void readCourses();
+void searchSchedule();
 
 #endif
